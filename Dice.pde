@@ -19,15 +19,34 @@ void draw()
 	sum = 0;
 	runs++;
 
-	int diceSize = ((height - 25) / Math.max(rows, columns) - 1);
-	int xSpacing = ((width - 10) / rows);
-	int ySpacing = ((height -0 - diceSize) / columns);
+	float xOffset = 5;
+	float yOffset = 5;
+
+	float xSpacing = (width - 10) / (float) columns;
+	// System.out.println(xSpacing);
+	float ySpacing = (height - 25) / (float) rows;
+	// System.out.println(ySpacing);
+
+	int diceSize = (int)(Math.min(xSpacing, ySpacing));
+	//int diceSize = ((height - 25) / Math.max(rows, columns) - 1);
+
+
+
+	if (xSpacing < ySpacing) {
+		yOffset = ((height - 25) - (ySpacing * rows) + diceSize) / 2.;
+	}
+	else {
+		xOffset = ((width - 10) - (xSpacing * columns) + diceSize) / 2.;	
+	}
+	System.out.println(xOffset);
+	System.out.println(yOffset);
 
 	for (int y = 0; y < rows; y++)
 	{
-		for (int x = 1; x <= columns; x++)
+		for (int x = 0; x < columns; x++)
 		{
-			d = new Die(x * xSpacing - xSpacing + 5, y * ySpacing + 5, diceSize);
+			d = new Die(x * xSpacing + 5, y * ySpacing + 5, diceSize);
+			
 			d.roll();
 			sum += d.value;
 			d.show();
@@ -49,26 +68,43 @@ void mousePressed()
 void keyPressed()
 {
 	if (keyCode == LEFT) {
-
+		--columns;
+		redraw();
 	}
-
-	if (drawing) {
-		noLoop();
+	else if (keyCode == RIGHT) {
+		++columns;
+		redraw();
+	}
+	else if (keyCode == UP) {
+		++rows;
+		redraw();
+	}
+	else if (keyCode == DOWN) {
+		--rows;
+		redraw();
 	}
 	else {
-		loop();
+		if (drawing) {
+		noLoop();
+		}
+		else {
+			loop();
+		}
+		drawing = !drawing;
 	}
-	drawing = !drawing;
+
+	
 }
 
 
 class Die //models one single dice cube
 {
 	//variable declarations here
-	int x, y, size, dotSize;
+	float x, y;
+	int size, dotSize;
 	int value;
 	
-	Die(int _x, int _y, int _size) //constructor
+	Die(float _x, float _y, int _size) //constructor
 	{
 		//variable initializations here
 		x = _x;
@@ -88,7 +124,7 @@ class Die //models one single dice cube
 		fill(255);
 		stroke(0);
 		strokeWeight(2);
-		rect(x, y, size, size);
+		rect(x, y, size, size, 4, 4, 4, 4);
 
 		fill(0);
 		noStroke();
