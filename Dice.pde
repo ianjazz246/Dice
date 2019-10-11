@@ -23,21 +23,29 @@ void draw()
 	float yOffset = 5;
 
 	float xSpacing = (width - 10) / (float) columns;
-	// System.out.println(xSpacing);
+	System.out.println(xSpacing);
 	float ySpacing = (height - 25) / (float) rows;
-	// System.out.println(ySpacing);
+	System.out.println(ySpacing);
 
 	int diceSize = (int)(Math.min(xSpacing, ySpacing));
+	if (xSpacing > ySpacing) {
+		System.out.println("x > y");
+	}
+	else {
+		System.out.println("y > x");
+	}
+	System.out.println("Dice size: " + diceSize);
 	//int diceSize = ((height - 25) / Math.max(rows, columns) - 1);
 
 
 
-	if (xSpacing < ySpacing) {
-		yOffset = ((height - 25) - (ySpacing * rows) + diceSize) / 2.;
-	}
-	else {
-		xOffset = ((width - 10) - (xSpacing * columns) + diceSize) / 2.;	
-	}
+	// if (xSpacing < ySpacing) {
+	// 	yOffset = ((height - 25) - (ySpacing * rows) + diceSize) / 2.;
+	// }
+	// else {
+	// 	xOffset = ((width - 10) - (xSpacing * columns) + diceSize) / 2.;	
+	// }
+	xOffset = ((width) - (xSpacing * (columns - 1)) - diceSize / 2) / 2.;	
 	System.out.println(xOffset);
 	System.out.println(yOffset);
 
@@ -45,20 +53,19 @@ void draw()
 	{
 		for (int x = 0; x < columns; x++)
 		{
-			d = new Die(x * xSpacing + 5, y * ySpacing + 5, diceSize);
+			d = new Die(x * xSpacing + xOffset, y * ySpacing + 5, diceSize);
 			
-			d.roll();
-			sum += d.value;
+			sum += d.roll();
 			d.show();
 		}
 	}
 	totalSum += sum;
 	textAlign(CENTER);
-	text("Sum: " + sum, width / 2, 290);
+	text("Sum: " + sum, width / 2, 295);
 	textAlign(LEFT);
-	text("# of dice:" + rows * columns, 5, 290);
+	text("# of dice:" + rows * columns, 5, 295);
 	textAlign(RIGHT);
-	text("All rolls:" + totalSum, 295, 290);
+	text("All rolls:" + totalSum, 295, 295);
 
 }
 void mousePressed()
@@ -68,8 +75,10 @@ void mousePressed()
 void keyPressed()
 {
 	if (keyCode == LEFT) {
-		--columns;
-		redraw();
+		if (columns > 1) {
+			--columns;
+			redraw();
+		}
 	}
 	else if (keyCode == RIGHT) {
 		++columns;
@@ -80,10 +89,13 @@ void keyPressed()
 		redraw();
 	}
 	else if (keyCode == DOWN) {
-		--rows;
-		redraw();
+		if (rows > 1) {
+			--rows;
+			redraw();
+		}
+		
 	}
-	else {
+	else if (key == 'r' || key == 'R') {
 		if (drawing) {
 		noLoop();
 		}
@@ -113,10 +125,11 @@ class Die //models one single dice cube
 		dotSize = size / 5;
 		value = 0;
 	}
-	void roll()
+	int roll()
 	{
 		//your code here
 		value = (int)(Math.random() * 6 + 1);
+		return value;
 	}
 	void show()
 	{
