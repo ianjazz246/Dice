@@ -23,18 +23,18 @@ void draw()
 	float yOffset = 5;
 
 	float xSpacing = (width - 10) / (float) columns;
-	System.out.println(xSpacing);
+	//System.out.println(xSpacing);
 	float ySpacing = (height - 25) / (float) rows;
-	System.out.println(ySpacing);
+	//System.out.println(ySpacing);
 
 	int diceSize = (int)(Math.min(xSpacing, ySpacing));
 	if (xSpacing > ySpacing) {
-		System.out.println("x > y");
+		//System.out.println("x > y");
 	}
 	else {
-		System.out.println("y > x");
+		//System.out.println("y > x");
 	}
-	System.out.println("Dice size: " + diceSize);
+	//System.out.println("Dice size: " + diceSize);
 	//int diceSize = ((height - 25) / Math.max(rows, columns) - 1);
 
 
@@ -46,8 +46,8 @@ void draw()
 	// 	xOffset = ((width - 10) - (xSpacing * columns) + diceSize) / 2.;	
 	// }
 	xOffset = ((width) - (xSpacing * (columns - 1)) - diceSize / 2) / 2.;	
-	System.out.println(xOffset);
-	System.out.println(yOffset);
+	//System.out.println(xOffset);
+	//System.out.println(yOffset);
 
 	for (int y = 0; y < rows; y++)
 	{
